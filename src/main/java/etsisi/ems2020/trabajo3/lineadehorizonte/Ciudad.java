@@ -26,19 +26,21 @@ public class Ciudad {
 		ciudad = new ArrayList <Edificio>();
 		int n = 5;
 		int i=0;
-		int xi,y,xd;
 		for(i=0;i<n;i++)
 		{
-		xi=(int)(Math.random()*100);
-		y=(int)(Math.random()*100);
-		xd=(int)(xi+(Math.random()*100));
-		Edificio auxedificio= new Edificio(xi,y);
-		auxedificio.setXd(xd);
-		this.addEdificio(auxedificio);
+		crearedificio(ciudad);
 		}
 		        
 		ciudad = new ArrayList <Edificio>();
 }
+    private void crearedificio(ArrayList<Edificio> ciudad) {
+    	int xi=(int)(Math.random()*100);
+		int y=(int)(Math.random()*100);
+		int xd=(int)(xi+(Math.random()*100));
+		Edificio auxedificio= new Edificio(xi,y);
+		auxedificio.setXd(xd);
+		this.addEdificio(auxedificio);
+    }
     
         
     public Edificio getEdificio(int i) {
@@ -85,8 +87,8 @@ else
 {
 int medio=(pi+pd)/2;
 LineaHorizonte s1 = this.crearLineaHorizonte(pi,medio);  LineaHorizonte s2 = this.crearLineaHorizonte(medio+1,pd);
-Punto a=null, b=null, aux=null;
-linea = LineaHorizonteFussion(s1,s2,aux); 
+//Punto a=null, b=null, aux=null;
+linea = LineaHorizonteFussion(s1,s2); 
 }
 
 return linea;
@@ -105,10 +107,11 @@ return linea;
      * problemas para que el LineaHorizonte calculado sea el correcto.
      */
 
-public LineaHorizonte LineaHorizonteFussion(LineaHorizonte s1,LineaHorizonte s2, Punto paux)
+public LineaHorizonte LineaHorizonteFussion(LineaHorizonte s1,LineaHorizonte s2)
 {
 	// en estas variables guardaremos las alturas de los puntos anteriores, en s1y la del s1, en s2y la del s2 
 	// y en prev guardaremos la previa del segmento anterior introducido
+	 //Punto paux=new Punto();
     int s1y=-1, s2y=-1, prev=-1;    
     LineaHorizonte salida = new LineaHorizonte(); // LineaHorizonte de salida
     imprimirout(s1,s2);
@@ -141,11 +144,17 @@ private void  mientras1(LineaHorizonte s1, LineaHorizonte salida){
     
 }
 
-
+private void iff(Punto paux,LineaHorizonte salida,Integer prev) {
+	if (paux.getY()!=prev) // si este maximo no es igual al del segmento anterior
+    {
+        salida.addPunto(paux); // añadimos el punto al LineaHorizonte de salida
+        prev = paux.getY();    // actualizamos prev
+    }
+}
 
  private LineaHorizonte mientrasBig(LineaHorizonte s1,LineaHorizonte s2){
 
-	 int s1y=-1, s2y=-1, prev=-1;  
+	 Integer s1y=-1, s2y=-1, prev=-1;  
  	LineaHorizonte salida = new LineaHorizonte();
        Punto paux = new Punto(); Punto  p1 = s1.getPunto(0);Punto p2 = s2.getPunto(0);
        
@@ -158,11 +167,7 @@ private void  mientras1(LineaHorizonte s1, LineaHorizonte salida){
             paux.setX(p1.getX());                // guardamos en paux esa X
             paux.setY(Math.max(p1.getY(), s2y)); // y hacemos que el maximo entre la Y del s1 y la altura previa del s2 sea la altura Y de paux
             
-            if (paux.getY()!=prev) // si este maximo no es igual al del segmento anterior
-            {
-                salida.addPunto(paux); // añadimos el punto al LineaHorizonte de salida
-                prev = paux.getY();    // actualizamos prev
-            }
+            iff(paux,salida,prev);
             s1y = p1.getY();   // actualizamos la altura s1y
             s1.borrarPunto(0); // en cualquier caso eliminamos el punto de s1 (tanto si se añade como si no es valido)
         }
@@ -171,11 +176,7 @@ private void  mientras1(LineaHorizonte s1, LineaHorizonte salida){
             paux.setX(p2.getX());                // guardamos en paux esa X
             paux.setY(Math.max(p2.getY(), s1y)); // y hacemos que el maximo entre la Y del s2 y la altura previa del s1 sea la altura Y de paux
 
-            if (paux.getY()!=prev) // si este maximo no es igual al del segmento anterior
-            {
-                salida.addPunto(paux); // añadimos el punto al LineaHorizonte de salida
-                prev = paux.getY();    // actualizamos prev
-            }
+            iff(paux,salida,prev);
             s2y = p2.getY();   // actualizamos la altura s2y
             s2.borrarPunto(0); // en cualquier caso eliminamos el punto de s2 (tanto si se añade como si no es valido)
         }
