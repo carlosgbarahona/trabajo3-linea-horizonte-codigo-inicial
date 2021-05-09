@@ -32,7 +32,9 @@ public class Ciudad {
 		xi=(int)(Math.random()*100);
 		y=(int)(Math.random()*100);
 		xd=(int)(xi+(Math.random()*100));
-		this.addEdificio(new Edificio(xi,y,xd));
+		Edificio auxedificio= new Edificio(xi,y);
+		auxedificio.setXd(xd);
+		this.addEdificio(auxedificio);
 		}
 		        
 		ciudad = new ArrayList <Edificio>();
@@ -109,11 +111,10 @@ public LineaHorizonte LineaHorizonteFussion(LineaHorizonte s1,LineaHorizonte s2,
 	// y en prev guardaremos la previa del segmento anterior introducido
     int s1y=-1, s2y=-1, prev=-1;    
     LineaHorizonte salida = new LineaHorizonte(); // LineaHorizonte de salida
-    Punto p1 = new Punto(); Punto p2 = new Punto();         // punto donde guardaremos el primer punto del LineaHorizonte s1 // punto donde guardaremos el primer punto del LineaHorizonte s2
     imprimirout(s1,s2);
-    mientrasBig(s1,s2,salida);
-   prev=mientras1(s1,salida,prev);
-   prev=mientras1(s2,salida,prev);
+    salida=mientrasBig(s1,s2);
+   mientras1(s1,salida);
+   mientras1(s2,salida);
    
     //Mientras tengamos elementos en s1 y en s2
     
@@ -122,9 +123,10 @@ public LineaHorizonte LineaHorizonteFussion(LineaHorizonte s1,LineaHorizonte s2,
 }
 
 
-private int  mientras1(LineaHorizonte s1, LineaHorizonte salida,int prev){
+private void  mientras1(LineaHorizonte s1, LineaHorizonte salida){
 	
     Punto paux=new Punto();
+    int prev=-1;
     while ((!s1.isEmpty())) //si aun nos quedan elementos en el s1
     {
         paux=s1.getPunto(0); // guardamos en paux el primer punto
@@ -136,17 +138,20 @@ private int  mientras1(LineaHorizonte s1, LineaHorizonte salida,int prev){
         }
         s1.borrarPunto(0); // en cualquier caso eliminamos el punto de s1 (tanto si se añade como si no es valido)
     }
-    return prev ;
+    
 }
 
 
 
- private void mientrasBig(LineaHorizonte s1,LineaHorizonte s2,LineaHorizonte salida){
+ private LineaHorizonte mientrasBig(LineaHorizonte s1,LineaHorizonte s2){
 
+	 int s1y=-1, s2y=-1, prev=-1;  
+ 	LineaHorizonte salida = new LineaHorizonte();
+       Punto paux = new Punto(); Punto  p1 = s1.getPunto(0);Punto p2 = s2.getPunto(0);
+       
     while ((!s1.isEmpty()) && (!s2.isEmpty())) 
     {
-    	int s1y=-1, s2y=-1, prev=-1;  
-          Punto paux = new Punto(); Punto  p1 = s1.getPunto(0);Punto p2 = s2.getPunto(0); // guardamos el primer elemento de s1 // guardamos el primer elemento de s2
+    	 // guardamos el primer elemento de s1 // guardamos el primer elemento de s2
         
         if (p1.getX() < p2.getX()) // si X del s1 es menor que la X del s2
         {
@@ -192,7 +197,7 @@ private int  mientras1(LineaHorizonte s1, LineaHorizonte salida,int prev){
             s2.borrarPunto(0);
         }
     }
-
+    return salida;
 }
 
 
@@ -220,7 +225,8 @@ void imprimirout(LineaHorizonte s1,LineaHorizonte s2){
             while(sr.hasNext())
             {
                 xi = sr.nextInt();xd = sr.nextInt(); y = sr.nextInt();
-                Edificio Salida = new Edificio(xi, y, xd);
+                Edificio Salida = new Edificio(xi, y);
+                Salida.setXd(xd);
                 this.addEdificio(Salida);
             }
         }
@@ -237,7 +243,10 @@ void imprimirout(LineaHorizonte s1,LineaHorizonte s2){
             xi=(int)(Math.random()*100);
             y=(int)(Math.random()*100);
             xd=(int)(xi+(Math.random()*100));
-            this.addEdificio(new Edificio(xi,y,xd));
+            Edificio auxedificio= new Edificio(xi,y);
+    		auxedificio.setXd(xd);
+    		this.addEdificio(auxedificio);
+            
         }
     }
 }

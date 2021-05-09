@@ -11,9 +11,9 @@ public class Edificio {
         this.xi = 0;
         this.y = 0;
     }    
-    public Edificio(int xi, int y, int xd)
+    public Edificio(int xi, int y)
     {
-        this.xd = xd;
+        this.xd = 0;
         this.xi = xi;
         this.y = y;
     }    
